@@ -1,0 +1,8 @@
+# Get a plan from the current position to the goal Pose
+
+# The final pose of the goal position
+geometry_msgs/PoseStamped goal
+
+---
+nav_msgs/Path plan
+string status

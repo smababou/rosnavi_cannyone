@@ -1,0 +1,33 @@
+<launch>
+
+	<!-- Args -->
+  <arg name="cannyone_full_model"		default="false"/>
+	<arg name="static_localization" 	default="false"/>
+
+	<!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+				if="$(arg cannyone_full_model)"
+        respawn="false" output="screen">
+		<param name="publish_frequency" value="10"/>
+		<param name="use_tf_static" 		value="false"/>
+	</node>
+
+  <!-- This package publishes sensor_msgs/JointState messages for a robot. -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"
+				if="$(arg cannyone_full_model)"
+        respawn="false" output="screen">
+	</node>
+
+	<!-- To be replaced by Aruco Localization -->
+	<node pkg="tf" type="static_transform_publisher" name="odom_to_basefootprint_static_pub"
+				if="$(arg static_localization)" 
+    		args="7.005 3.510 0.0  0.0 0.0 0.0 1.0 odom base_footprint 100" />
+
+	<!-- <node pkg="tf" type="static_transform_publisher" name="odom_to_basefootprint_static_pub" 
+    		args="6.50 5.30 0.0  0.0 0.0 0.0 1.0 odom base_footprint 100" /> -->
+	
+	<node pkg="tf" type="static_transform_publisher" name="basefootprint_baselink_static_pub"
+				unless="$(arg cannyone_full_model)"
+    		args="0.0 0.0 0.06  0.0 0.0 0.0 1.0 base_footprint base_link 100" />
+
+</launch>

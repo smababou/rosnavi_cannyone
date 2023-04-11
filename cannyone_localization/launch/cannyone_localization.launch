@@ -1,0 +1,23 @@
+<launch>
+
+  <!-- Args -->
+  <arg name="cannyone_full_model"	  default="false"/>
+  <arg name="static_localization"   default="false"/>
+
+	<!-- Launch CannyOne TF Publisher -->
+	<include file="$(find cannyone_localization)/launch/cannyone_tf_publisher.launch">
+    <arg name="cannyone_full_model" value="$(arg cannyone_full_model)"/>
+    <arg name="static_localization" value="$(arg static_localization)"/>
+  </include>
+
+  <node pkg="cannyone_localization" name="cannyone_static_localization_node" type="cannyone_location.py"
+        if="$(arg static_localization)"
+        respawn="false" output="screen">
+  </node>
+
+  <node pkg="cannyone_localization" name="cannyone_localization_node" type="CannyOneLocalization.py"
+        unless="$(arg static_localization)"
+        respawn="false" output="screen">
+  </node>
+
+</launch>

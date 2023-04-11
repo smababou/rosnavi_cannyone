@@ -1,0 +1,80 @@
+Topic: [ulNextTargetPosId,
+        xActPos,
+        xaPathSegments,
+        xNaviType,
+        xStatusPi,
+        xVelocity
+        ]
+
+DataTyp:
+  ulNextTargetPosId : [16]
+  xActPos           : [32, 32, 32]
+  xaPathSegments    : [ 16,
+                       [32, 32, 32]
+                      ]
+  xNaviType         : [8]
+  xStatusPi         : [8]
+  xVelocity         : [16, 16]
+  xNaviLog          : [8]
+
+RegVal:
+  ulNextTargetPosId : 0x01
+  xActPos           : 0x02
+  xaPathSegments    : 0x03
+  xNaviType         : 0x04
+  xStatusPi         : 0x05
+  xVelocity         : 0x06
+  xNaviLog          : 0x07
+
+PositionLOT:
+  '1' : [ 5105, 3510,    0]     # LOT_BEFORE_RACK         ⮕
+  '2' : [ 5615, 3510,    0]     # LOT_FIRST_PLACE         ⮕
+  '3' : [ 8365, 3510,    0]     # LOT_LAST_PLACE          ⮕
+  '4' : [ 8905, 3510,    0]     # LOT_AFTER_RACK          ⮕
+  '5' : [ 5615, 3510, 1571]     # LOT_FIELD_1
+  '6' : [ 7850, 3510, 2356]     # LOT_FIELD_2
+  '7' : [ 5105, 4100, 4712]     # LOT_BEFORE_RACK_NORTH   ⤋
+  '8' : [ 5005, 2720, 1571]     # LOT_BEFORE_RACK_SOUTH   ⤊
+  '9' : [ 8905, 4100, 1571]     # LOT_AFTER_RACK_NORTH    ⤊ [⟻ 3142]
+  '10': [ 9005, 2720, 4712]     # LOT_AFTER_RACK_SOUTH    ⤋ [⟻ 3142]
+
+eState_t:
+  RUN       : 0x01              # for continuous task
+  OK        : 0x02              # for once calculations
+  IDLE      : 0x03
+  FINISHED  : 0x04
+  FAILED    : 0x05
+
+eNaviLog_t:
+  NAVI_OK                     : 0xA1
+  NAVI_ERR_UART               : 0xA2
+  NAVI_ERR_TARGET_UNREACHABLE : 0xA3
+  NAVI_ERR_LOCALIZATION       : 0xA4
+  NAVI_ERR_CAMERA             : 0xA5
+  NAVI_ERR_ROS                : 0xA6
+  NAVI_ERR                    : 0xA7
+  NAVI_ERR_                   : 0xA8
+  # sub steps maybe in future
+  NAVI_CALC_PATH_BUSY         : 0x21
+  NAVI_CALC_PATH_FINISHED     : 0x22
+  # precise maybe in future
+  NAVI_PREC_0_5               : 0x41
+  NAVI_PREC_1_0               : 0x42
+  NAVI_PREC_1_5               : 0x43
+
+eCMD_t:
+  NAVI_first      : 0xA0
+  NAVI_end        : 0xBF
+  NAVI_FLYER      : 0xA1        # Aruco Markers Localization
+  NAVI_OE_AISLE   : 0xA2        # Aruco Markers Localization
+  NAVI_OE_RACK    : 0xA3        # Aruco Markers Localization
+  NAVI_AISLE      : 0xA4        # Aruco Markers Localization
+  NAVI_IDF        : 0xA5        # Aruco Markers Localization
+  NAVI_OPENFIELD  : 0xA6        # Aruco Markers Localization
+  NAVI_CHARGE     : 0xA7
+  NAVI_LINE       : 0xA8        # Aruco Markers Localization
+  NAVI_POINTS     : 0xA9
+  NAVI_MARKER     : 0xAA        # Aruco Markers Localization
+  NAVI_STOP       : 0xAB        # shutdown complete navigation
+  NAVI_ORDER_IDLE : 0xAC        # shutdown navigation without order management parts
+  NAVI_RESTART    : 0xAD

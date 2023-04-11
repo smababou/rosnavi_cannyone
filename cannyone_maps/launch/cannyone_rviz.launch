@@ -1,0 +1,11 @@
+<launch> 
+
+	<!-- Args -->
+	<arg name="rviz_config"		default="halle_config_nm"/>
+
+	<!-- RVIZ -->
+	<node name="rviz" pkg="rviz" type="rviz" 
+				args="-d $(find cannyone_maps)/rviz/$(arg rviz_config).rviz">
+	</node>
+
+</launch>

@@ -1,0 +1,19 @@
+# Move base node parameters. 
+# For full documentation of the parameters in this file, please see
+#
+#  http://wiki.ros.org/move_base#Parameters
+#
+
+obstacle_range: 3.0
+raytrace_range: 3.5
+
+# footprint: [[-0.176, -0.1655], [-0.176, 0.1655],[0.176, 0.1655],[0.176, -0.1655]]
+robot_radius: 0.176
+footprint_padding: 0.0
+
+map_type: costmap
+
+# Debug
+always_send_full_costmap: false
+subscribe_to_updates: false
+inf_is_valid: false

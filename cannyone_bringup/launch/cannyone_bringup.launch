@@ -1,0 +1,42 @@
+<launch>
+
+	<!-- Args -->
+	<arg name="robot_name"						default="cannyone"/>
+	<arg name="odom_topic"						default="cannyone_position"/>
+	<arg name="static_localization" 	default="false"/>
+	<arg name="cannyone_full_model"		default="false"/>
+	<arg name="move_base"   					default="false" />
+
+	<!-- Launch Robot Model -->
+  <param name="robot_description"
+				 if="$(arg cannyone_full_model)"
+				 command="$(find xacro)/xacro --inorder 
+									$(find cannyone_description)/urdf/$(arg robot_name).urdf.xacro" />
+
+	<!-- Launch CannyOne Raspi Camera -->
+	<include file="$(find cannyone_bringup)/launch/cannyone_rpicamera.launch">
+  </include>
+
+	<!-- Launch CannyOne Communication -->
+	<include file="$(find cannyone_communication)/launch/cannyone_communication.launch">
+  </include>
+
+	<!-- Launch CannyOne Map -->
+	<include file="$(find cannyone_maps)/launch/cannyone_map.launch">
+    <arg name="map_file" 						value="flyer"/>
+		<arg name="fake_tf" 						value="true"/>
+  </include>
+
+	<!-- Launch CannyOne Localization -->
+	<include file="$(find cannyone_localization)/launch/cannyone_localization.launch">
+		<arg name="cannyone_full_model" value="$(arg cannyone_full_model)"/>
+		<arg name="static_localization" value="$(arg static_localization)"/>
+  </include>
+
+	<!-- Launch CannyOne Navigation -->
+	<include file="$(find cannyone_navigation)/launch/cannyone_navigation.launch">
+		<arg name="odom_topic" 					value="$(arg odom_topic)"/>
+		<arg name="move_base" 					value="$(arg move_base)"/>
+  </include>
+
+</launch>

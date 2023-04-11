@@ -1,0 +1,9 @@
+base:
+  mass: 18.748                    # Base mass in Kg
+  x_size: 0.352                   # Dimension in x axis
+  y_size: 0.280                   # Dimension in y axis
+  z_size: 0.121                   # Dimension in z axis
+  radius: 0.176                   # Base radius in m
+  length: 0.121                   # Base length in m, considering is as a cylinder
+  mesh:   'cannyone_base_v4.stl'  # Name of the mesh files. Leave it empty ('') to have a white base.
+  # mesh: ''

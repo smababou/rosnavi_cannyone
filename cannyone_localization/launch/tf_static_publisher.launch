@@ -1,0 +1,40 @@
+<launch>
+
+    <!-- Localization with respect to Frame Id  -->
+    <arg name="camera_frame" default="camera_position"/>
+    <arg name="marker_id" default="fiducial_"/>
+    <arg name="map_frame" default="map"/>
+    <arg name="odom_frame" default="odom"/>
+    <arg name="base_link_frame" default="base_link"/>
+    <arg name="base_footprint_frame" default="base_footprint"/>
+    <arg name="robot_name" default="cannyone"/>
+
+
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find cannyone_description)/urdf/$(arg robot_name).urdf.xacro" />
+    <!-- On Small Robot -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="robotbaselink_to_camera_static_pub" 
+    args="0.11 0.0 0.025  -0.5 0.5 -0.5 0.5 $(arg base_link_frame) $(arg camera_frame) 10" /> -->
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="basefootprint_to_robotbaselink_static_pub" 
+    args="0.0 0.0 0.074  0.0 0.0 0.0 1.0 $(arg base_footprint_frame) $(arg base_link_frame) 10" /> -->
+
+    <!-- To be replaced by base controller transform -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="odom_to_basefootprint_static_pub" 
+    args="0 0 0 0 0 0 $(arg odom_frame) $(arg base_footprint_frame) 10" /> -->
+    <!-- convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+            respawn="false" output="screen"/>
+
+    <!-- This package publishes sensor_msgs/JointState messages for a robot. -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"
+            respawn="false" output="screen"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="basefootprint_to_camera_static_pub" 
+    args="0.0 -0.11 -0.099  0.0 0.0 0.70710678 0.70710678 $(arg camera_frame) $(arg base_footprint_frame) 10" />
+
+    <!-- Aruco Static Tester-->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="map_to_Aruco_static_pub" 
+    args="0.80 -0.21 0.0  0.5 -0.5 -0.5 0.5 map fiducial_4_real 1" /> -->
+
+
+</launch>

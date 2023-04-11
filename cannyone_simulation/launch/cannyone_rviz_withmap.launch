@@ -1,0 +1,20 @@
+<launch>
+
+  <arg name="rviz_config" default="cannyone"/>
+  <arg name="map_file"    default="openend"/>
+  <arg name="fake_tf"     default="false"/>
+
+  <!-- To be replaced by base controller transform -->
+  <node pkg="tf" type="static_transform_publisher" name="map_to_odom_static_pub"
+    if="$(arg fake_tf)"
+    args="0 0 0 0 0 0 map odom 50" />
+
+  <!-- Launch Map Server -->
+  <node pkg="map_server" type="map_server" name="map_server" 
+    args="$(find cannyone_maps)/maps/$(arg map_file)/$(arg map_file).yaml"> 
+  </node>
+
+  <!--RViz-->
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find cannyone_simulation)/rviz/$(arg rviz_config).rviz" />
+
+</launch>

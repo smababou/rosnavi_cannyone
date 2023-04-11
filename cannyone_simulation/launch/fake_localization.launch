@@ -1,0 +1,55 @@
+<!-- 
+    ROS navigation stack
+-->
+<launch>
+
+	<!-- Args -->
+	<arg name="initial_pose_x" default="0.0"/>
+	<arg name="initial_pose_y" default="0.0"/>
+	<arg name="initial_pose_a" default="0.0"/>
+	<arg name="delta_x" default="0.0"/>
+	<arg name="delta_y" default="0.0"/>
+	<arg name="delta_w" default="0.0"/>
+
+
+	<!-- Robot Initial Position Topic -->
+	<node pkg="rostopic" type="rostopic" name="robot_init_pose" output="screen"
+				args="pub 
+							-r 50
+							/initialpose 
+							geometry_msgs/PoseWithCovarianceStamped
+							'{
+								header:  {
+									seq: 0, 
+									stamp: 0, 
+									frame_id: ''
+									},
+								pose: {
+									pose: {
+										position: {
+											x: $(arg initial_pose_x), 
+											y: $(arg initial_pose_y), 
+											z: 0.0
+											},
+										orientation: {x: 0.0, y: 0.0, z: 0.0, w: 0.0}
+									}, 
+									covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+									0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+									0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+									0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+									0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+									}
+							}'
+							" />
+
+	<!-- Fake Localization Package -->
+	<node pkg="fake_localization" type="fake_localization" name="fake_localization" output="screen" >
+		<param name="~odom_frame_id" value="odom" />
+		<param name="~base_frame_id" value="base_footprint"/>
+		<param name="~global_frame_id" value="map" />
+		<param name="~delta_x"            value="$(arg delta_x)"/>
+		<param name="~delta_y"            value="$(arg delta_y)"/>
+		<param name="~delta_w"            value="$(arg delta_w)"/>
+	</node>
+
+</launch>

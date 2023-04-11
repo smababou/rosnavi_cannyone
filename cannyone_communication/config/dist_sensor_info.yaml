@@ -1,0 +1,11 @@
+attr: [radiation_type,
+        field_of_view,
+        min_range,
+        max_range
+        ]                 # Data attributes
+
+constants:
+  radiation_type: 1       # ULTRASOUND=0 INFRARED=1        [uint8]
+  field_of_view: 1.5      # Maximum Angle of a Sample View [float32]
+  min_range: 0.5          # Minimum detection Range        [float32]
+  max_range: 3.0          # Maximum detection Range        [float32]

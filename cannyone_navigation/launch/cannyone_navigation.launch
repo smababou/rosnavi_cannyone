@@ -1,0 +1,35 @@
+<!-- 
+    CannyOne navigation stack
+-->
+<launch>
+
+	<!-- Args -->
+	<arg name="odom_topic"  						default="mobile_base_controller/odom" />
+	<arg name="frame_id"  							default="map" />
+	<arg name="gplanner_service_name"   default="/global_planner/planner/make_plan" />
+	<arg name="move_base"   						default="false" />
+
+	<!-- Launch CannyOne Move Base -->
+	<include file="$(find cannyone_navigation)/launch/move_base.launch"
+					 if="$(arg move_base)">
+		<arg name="odom_topic" 						value="/$(arg odom_topic)"/>
+		<arg name="global" 								value="true"/>
+  </include>
+
+	<!-- Launch CannyOne Global Planner -->
+	<node pkg="global_planner" type="planner" name="global_planner" 
+				unless="$(arg move_base)"
+				respawn="false" output="screen">
+		<rosparam file="$(find cannyone_navigation)/config/gp_costmap_params.yaml" command="load" />
+		<rosparam file="$(find cannyone_navigation)/config/gp_planner_params.yaml" command="load"/>
+	</node>
+
+	<node pkg="cannyone_navigation" name="CannyOneNavigation" type="CannyOneNavigation.py" 
+		respawn="false" output="screen">
+		<!-- global costmap params -->
+		<param name="odom_topic" 						type="string" value="$(arg odom_topic)"/>
+		<param name="frame_id" 							type="string" value="$(arg frame_id)"/>
+		<param name="gplanner_service_name" type="string" value="$(arg gplanner_service_name)"/>
+	</node>
+
+</launch>

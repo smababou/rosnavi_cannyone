@@ -1,0 +1,16 @@
+# Global Planner parameters. 
+# For full documentation of the parameters in this file, please see
+#
+#  http://wiki.ros.org/global_planner#Parameters
+#
+
+planner:  
+  lethal_cost: 253                              # default 253
+  neutral_cost: 66                              # default 50
+  cost_factor: 0.55                             # Factor to multiply each cost from costmap by, default 3.0
+  publish_potential: false                      # Publish Potential Costmap (this is not like the navfn pointcloud2 potential), default true
+
+  orientation_mode: 1                           # 0 - None
+                                                # 1 - Forward
+                                                # 2 - Interpolate
+                                                # 3 - ForwardThenInterpolate

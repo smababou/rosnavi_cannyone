@@ -1,0 +1,48 @@
+<launch>
+  <arg name="model"				default="ver1"/>
+  <arg name="x_pos"				default="0.0"/>
+  <arg name="y_pos"				default="0.0"/>
+  <arg name="z_pos"				default="0.0"/>
+  <arg name="robot_name"	default="cannyone"/>
+	<arg name="world"    		default="openend_single"/>
+
+  <rosparam command="load"
+        file="$(find cannyone_simulation)/config/gazebo_ros_control_params.yaml"/>
+
+  <!-- <rosparam command="load"
+        file="$(find cannyone_simulation)/config/gazebo_ros_control_pid.yaml"/> -->
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" 
+        args="joint_state_controller
+              mobile_base_controller"/>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="false" output="screen"/>
+
+  <!-- Launch Gazebo Empty World -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find cannyone_simulation)/worlds/$(arg world).world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+	<!-- Launch Robot Model -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find cannyone_description)/urdf/$(arg robot_name).urdf.xacro" />
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" 
+				args="-urdf -model $(arg robot_name) 
+							-x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) 
+							-param robot_description" />
+
+	<!-- Launch rviz -->
+	<include file="$(find cannyone_simulation)/launch/cannyone_rviz_withmap.launch">
+    <arg name="map_file" value="$(arg world)"/>
+		<arg name="rviz_config" value="$(arg robot_name)"/>
+  </include>
+
+</launch>

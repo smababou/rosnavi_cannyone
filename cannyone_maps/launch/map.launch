@@ -1,0 +1,17 @@
+<launch> 
+
+	<!-- Args -->
+	<arg name="map_file" 			default="openend"/>
+	<arg name="rviz_config"		default="map_tester"/>
+
+	<!-- Launch Map Server -->
+	<node pkg="map_server" type="map_server" name="map_server" 
+				args="$(find cannyone_maps)/maps/$(arg map_file)/$(arg map_file).yaml"> 
+	</node> 
+
+	<!-- RVIZ -->
+	<node name="rviz" pkg="rviz" type="rviz" 
+				args="-d $(find cannyone_maps)/rviz/$(arg rviz_config).rviz">
+	</node>
+
+</launch>

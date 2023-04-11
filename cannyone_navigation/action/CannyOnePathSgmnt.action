@@ -1,0 +1,13 @@
+# Goal
+uint32 x
+uint32 y
+uint32 theta
+
+---
+# Result 
+string result
+
+---
+# Feedback
+nav_msgs/Path plan
+string status

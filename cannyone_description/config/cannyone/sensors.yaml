@@ -1,0 +1,22 @@
+RPi_Camera:
+  mass:     0.1                   # Sensor mass in Kg
+  x_size:   0.01                  # Sensor dimension in X-axis in m
+  y_size:   0.025                 # Sensor dimension in Y-axis in m
+  z_size:   0.024                 # Sensor dimension in Z-axis in m
+  mesh:     'RPi_Camera.stl'   # Name of the mesh files. Leave it empty ('') to have a red Sensor
+  x_offset: 0.16655               # Offset distance, in m, from sensor base
+  y_offset: 0.0                   # Offset distance, in m, from sensor base
+  z_offset: 0.0626                # Offset distance, in m, from sensor base
+
+gpu_laser:
+  mass:     0.1                   # Sensor mass in Kg
+  radius:   0.015                 # Sensor radius in m
+  length:   0.01                  # Sensor length in m, considering is as a cylinder
+  # mesh:     'rplidar-a2.stl'      # Name of the mesh files. Leave it empty ('') to have a red Sensor
+  mesh: ''
+  dx:       0.0
+  dy:       0.0
+  dz:       0.17
+  angular_range:
+    min:    -3.1415
+    max:    3.1415

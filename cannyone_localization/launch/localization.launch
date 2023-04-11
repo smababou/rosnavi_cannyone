@@ -1,0 +1,20 @@
+<launch>
+
+    <!-- Localization with respect to Frame Id  -->
+    <arg name="ref_frame_id" default="odom"/>  <!-- camera, base_footprint, odom -->
+    <arg name="marker_id" default="fiducial_"/>
+    <arg name="markers_topic" default="fiducial_transforms"/>
+
+    <include file="$(find cannyone_localization)/launch/tf_static_publisher.launch" />
+
+    <node name="robot_tf_standalone" pkg="cannyone_localization"
+        type="robot_tf_standalone.py" output="screen">
+        <param name="ref_frame_id" value="$(arg ref_frame_id)"/>
+        <param name="marker_id" value="$(arg marker_id)"/>
+        <param name="markers_topic" value="$(arg markers_topic)"/>
+        <param name="markers_location" type="string"
+            value="$(find cannyone_localization)/config/markers_location.yaml" />
+    </node>
+
+    
+</launch>

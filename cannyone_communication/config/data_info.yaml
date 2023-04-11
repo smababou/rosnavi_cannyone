@@ -1,0 +1,51 @@
+xVelocity:
+  topic: cannyone_velocity            # ROS topic to be published
+  frame_id: base_footprint            # ROS topic related frame
+  package: cannyone_communication     # ROS package related data
+  message: RobotVelocityMsg           # ROS message related data
+  extra: ''                           # Sensor Constants
+  attr: [twist.linear.x,
+          twist.angular.z,
+          ]                           # Data attributes
+
+dis_side_left:
+  topic: left_dist                    # ROS topic to be published
+  frame_id: left_sensor               # ROS topic related frame
+  package: sensor_msgs                # ROS package related data
+  message: Range                      # ROS message related data
+  extra: dist_sensor_info             # Sensor Constants
+  attr: [range]                       # Data Type
+
+dis_side_right:
+  topic: right_dist                   # ROS topic to be published
+  frame_id: right_sensor              # ROS topic related frame
+  package: sensor_msgs                # ROS package related data
+  message: Range                      # ROS message related data
+  extra: dist_sensor_info             # Sensor Constants
+  attr: [range]                       # Data attributes
+  
+imu:
+  topic: imu                          # ROS topic to be published
+  frame_id: imu_sensor                # ROS topic related frame
+  package: sensor_msgs                # ROS package related data
+  message: Imu                        # ROS message related data
+  extra: imu_sensor_info              # Sensor Constants
+  attr: [orientation.x,
+          orientation.y, 
+          orientation.z, 
+          orientation.w, 
+          angular_velocity.x, 
+          angular_velocity.y, 
+          angular_velocity.z,
+          linear_acceleration.x,
+          linear_acceleration.y, 
+          linear_acceleration.z
+        ]                             # Data attributes
+
+xNaviType:
+  topic: eCMD_t                  # ROS topic to be published
+  frame_id: base_footprint            # ROS topic related frame
+  package: cannyone_navigation        # ROS package related data
+  message: CannyOnexNaviType          # ROS message related data
+  extra: ''                           # Sensor Constants
+  attr: [xNaviType]                   # Data attributes

@@ -1,0 +1,14 @@
+<launch>
+
+  <rosparam ns="data_info" command="load" file="$(find cannyone_communication)/config/data_info.yaml" />
+  <rosparam ns="data_info" param="dist_sensor_info" command="load" file="$(find cannyone_communication)/config/dist_sensor_info.yaml" />
+  <rosparam ns="data_info" param="imu_sensor_info" command="load" file="$(find cannyone_communication)/config/imu_sensor_info.yaml" />
+  <rosparam ns="cannyone_communication_data" command="load" file="$(find cannyone_communication)/config/communication_data.yaml" />
+
+  <node pkg="cannyone_communication" name="cannyone_data_analyzer_node" type="CannyOneDataAnalyzer_standalone.py"
+        respawn="false" output="screen">
+    <param name="port" value="/dev/ttyAMA1"/>
+		<param name="baud" value="115200"/>
+  </node>
+
+</launch>

@@ -1,0 +1,115 @@
+<launch>
+
+	<!-- Args -->
+	<arg name="set_nodelet_manager"				default="false"/>
+	<arg name="nodelet_manager_name" 			value="nodelet_manager"/> <!-- standalone_nodelet, nodelet_manager -->
+	<arg name="camera_frame_id"						value="camera" />
+	<arg name="camera_name"								value="camera" />
+	<arg name="image_width"								value="1280" />
+	<arg name="image_height"							value="720" />
+	<arg name="frame_rate"								value="20" />
+	<arg name="video_device"							value="/dev/video" />
+	<arg name="device_id"									value="0" />
+
+	<!-- launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " -->
+	<arg name="node_start_delay" 					default="0.1" />
+
+
+
+	<!-- Nodelet Manager -->
+
+	<node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" 
+	if="$(arg set_nodelet_manager)"
+	args="manager" output="screen"/>
+
+
+
+	<!-- Camera Tester using ROS usb cam package -->
+
+	<!-- <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+		<param name="camera_info_url" type="string" 
+		value="package://cannyone_bringup/camera_calibration/camera_info/camera_$(arg image_width)_$(arg image_height).yaml" />
+		<param name="camera_name" 					value="$(arg camera_name)" />
+		<param name="camera_frame_id"				value="$(arg camera_frame_id)" />
+		<param name="video_device"					value="$(arg video_device)$(arg device_id)" />
+		<param name="framerate"							value="$(arg frame_rate)" />
+		<param name="image_width"						value="$(arg image_width)" />
+		<param name="image_height"					value="$(arg image_height)" />
+		<param name="pixel_format" 					value="yuyv" />
+		<param name="io_method" 						value="mmap" />
+		<remap from="usb_cam/camera_info" 	to="$(arg camera_name)/camera_info" />
+		<remap from="usb_cam/image_raw" 		to="$(arg camera_name)/image_raw" />
+	</node> -->
+
+
+
+	<!-- <node pkg="nodelet" type="nodelet" name="CvCameraNodelet"
+			args="cv_camera/cv_camera_nodelet $(arg nodelet_manager_name)" output="screen"> -->
+	<node name="cv_camera" pkg="cv_camera" type="cv_camera_node" output="screen" >
+		<param name="camera_info_url" type="string" 
+		value="package://cannyone_bringup/camera_calibration/camera_info/camera_$(arg image_width)_$(arg image_height).yaml" />
+		<param name="frame_id" 							value="$(arg camera_frame_id)" />
+		<param name="device_id" 						value="$(arg device_id)" />
+		<param name="rate" 									value="$(arg frame_rate)" />
+		<param name="image_width" 					value="$(arg image_width)" />
+		<param name="image_height" 					value="$(arg image_height)" />
+		<remap from="cv_camera/camera_info" to="$(arg camera_name)/camera_info" />
+		<remap from="cv_camera/image_raw" 	to="$(arg camera_name)/image_raw" />
+	</node>
+
+
+
+	<!-- Single image rectification and color processing. -->
+
+	<!-- <group ns="$(arg camera_name)">
+		<node pkg="image_proc" type="image_proc" name="image_proc"/>
+			<remap from="image_raw" 					to="/$(arg camera_name)/image_raw" />
+			<remap from="image_mono" 					to="/$(arg camera_name)/image_mono" />
+			<remap from="image_color" 				to="/$(arg camera_name)/image_color" />
+	</group> -->
+
+
+
+	<!-- Takes a raw camera stream and publishes monochrome and color versions of it. 
+	If the raw images are Bayer pattern, it debayers using bilinear interpolation. -->
+
+	<node pkg="nodelet" type="nodelet" name="debayer"
+				if="$(arg set_nodelet_manager)"
+				args="load image_proc/debayer $(arg nodelet_manager_name)" output="screen">
+		<remap from="image_raw" 						to="/$(arg camera_name)/image_raw" />
+		<remap from="image_mono" 						to="/$(arg camera_name)/image_mono" />
+		<remap from="image_color" 					to="/$(arg camera_name)/image_color" />
+	</node>
+
+	<node pkg="nodelet" type="nodelet" name="debayer"
+				unless="$(arg set_nodelet_manager)"
+				args="standalone image_proc/debayer" output="screen">
+		<remap from="image_raw" 						to="/$(arg camera_name)/image_raw" />
+		<remap from="image_mono" 						to="/$(arg camera_name)/image_mono" />
+		<remap from="image_color" 					to="/$(arg camera_name)/image_color" />
+	</node>
+
+
+
+	<!-- Takes an unrectified image stream and its associated calibration parameters, 
+	and produces rectified images. -->
+
+	<!-- <node pkg="nodelet" type="nodelet" name="rectify"
+				args="load image_proc/rectify $(arg nodelet_manager_name)" output="screen">
+		<remap from="image_mono" 						to="/$(arg camera_name)/image_mono" />
+		<remap from="camera_info" 					to="/$(arg camera_name)/camera_info" />
+		<remap from="image_rect" 						to="/$(arg camera_name)/image_rect" />
+	</node> -->
+
+
+
+	<!-- Applies decimation (software binning) and ROI to a raw camera image post-capture. 
+	Remap camera and camera_out to the desired input/output camera namespaces. -->
+
+	<!-- <node pkg="nodelet" type="nodelet" name="crop_decimate"
+				args="load image_proc/crop_decimate $(arg nodelet_manager_name)" output="screen">
+		<remap from="image_raw" 						to="/$(arg camera_name)/image_raw" />
+		<remap from="camera_info" 					to="/$(arg camera_name)/camera_info" />
+	</node> -->
+
+</launch>

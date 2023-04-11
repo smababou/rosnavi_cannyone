@@ -1,0 +1,16 @@
+<launch> 
+
+	<!-- Args -->
+	<arg name="map_file" 			default="flyer"/>
+	<arg name="fake_tf"     default="false"/>
+
+	<node pkg="tf" type="static_transform_publisher" name="map_to_odom_static_pub"
+				if="$(arg fake_tf)"
+				args="0.0 0.0 0.0  0.0 0.0 0.0 1.0 map odom 100" />
+
+	<!-- Launch Map Server -->
+	<node pkg="map_server" type="map_server" name="map_server" 
+				args="$(find cannyone_maps)/maps/$(arg map_file)/$(arg map_file).yaml"> 
+	</node> 
+
+</launch>

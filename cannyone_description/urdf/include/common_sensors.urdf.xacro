@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+<!-- ===================== Camera xacro =========================================
+
+  Xacro to create a Camra link and the respective joint. For more detail information and usage, see:
+
+  params:
+  - prefix [string]: used to diferentiate the link and joint name;
+  - parent_link [string]: Name of the link camera is related to;
+  - sensor_prop [dictionary]: Camera link properties;
+  - mesh [string]: file name of the wheel mesh;
+    - DEFAULT Value -> Empty string
+-->
+
+<xacro:macro name="camera_sensor" params="prefix parent_link sensor_prop mesh:='' ">
+
+  <xacro:property name="pos_x_joint"
+                  value="${sensor_prop['RPi_Camera']['x_offset']}"/>
+  <xacro:property name="pos_y_joint"
+                  value="${sensor_prop['RPi_Camera']['y_offset']}"/>
+  <xacro:property name="pos_z_joint" 
+                  value="${sensor_prop['RPi_Camera']['z_offset']}"/>
+
+
+  <link name="camera_link">
+    <xacro:if value="${mesh != '' }" >
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/sensors/${mesh}" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="dark_grey"/>
+      </visual>
+    </xacro:if>
+    <xacro:if value="${mesh == '' }" >
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size=" ${sensor_prop['RPi_Camera']['x_size']} 
+											${sensor_prop['RPi_Camera']['y_size']} 
+											${sensor_prop['RPi_Camera']['z_size']}"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+    </xacro:if>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+				<box size=" ${sensor_prop['RPi_Camera']['x_size']} 
+										${sensor_prop['RPi_Camera']['y_size']} 
+										${sensor_prop['RPi_Camera']['z_size']}"/>
+      </geometry>
+    </collision>
+    <xacro:box_inertia  m="${sensor_prop['RPi_Camera']['mass']}"
+												x="${sensor_prop['RPi_Camera']['x_size']}"
+												y="${sensor_prop['RPi_Camera']['y_size']}"
+												z="${sensor_prop['RPi_Camera']['z_size']}">
+		</xacro:box_inertia>
+  </link>
+
+  <gazebo reference="camera_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="${parent_link}"/>
+    <child link="camera_link"/>
+    <axis xyz="0 1 0" />
+    <origin xyz="${pos_x_joint} ${pos_y_joint} ${pos_z_joint}" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="camera_rgb_joint" type="fixed">
+    <origin xyz="0.00565 0.0 0.0024" rpy="0 0 0"/>
+    <parent link="camera_link"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+  <link name="camera_rgb_frame"/>
+
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_rgb_optical_frame"/>
+  </joint>
+  <link name="camera_rgb_optical_frame"/>
+
+</xacro:macro>
+
+<!-- ========================================================================-->
+  
+</robot>

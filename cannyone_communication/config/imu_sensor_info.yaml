@@ -1,0 +1,16 @@
+attr: [orientation_covariance,
+        angular_velocity_covariance,
+        linear_acceleration_covariance
+        ]                                       # Data attributes
+
+constants:
+  orientation_covariance: [0, 0, 0,
+                            0, 0, 0,
+                            0, 0, 0]            # Orientation Covariance Matrix           [float64]
+  angular_velocity_covariance: [0, 0, 0,
+                                0, 0, 0,
+                                0, 0, 0]        # Angular Velocity Covariance Matrix      [float64]
+  linear_acceleration_covariance: [0, 0, 0,
+                                    0, 0, 0,
+                                    0, 0, 0]    # Linear Acceleration Covariance Matrix   [float64]
+

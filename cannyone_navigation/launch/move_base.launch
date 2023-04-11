@@ -1,0 +1,33 @@
+<!-- 
+    ROS navigation stack
+-->
+<launch>
+
+	<!-- Args -->
+	<arg name="odom_topic"  default="/mobile_base_controller/odom" />
+	<arg name="dwa"         default="false" />
+	<arg name="global"      default="false" />
+
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<!-- global costmap params -->
+		<rosparam file="$(find cannyone_navigation)/config/common_costmap_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find cannyone_navigation)/config/global_costmap_params.yaml" command="load" />
+		<!-- local costmap params -->
+		<rosparam file="$(find cannyone_navigation)/config/common_costmap_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find cannyone_navigation)/config/local_costmap_params.yaml" command="load" />
+		<!-- move base params -->
+		<rosparam file="$(find cannyone_navigation)/config/move_base_params.yaml" command="load" />
+		<!-- external params file that could be loaded into the move_base namespace -->
+		<!-- global planner params -->
+		<rosparam 
+			if="$(arg global)"
+			file="$(find cannyone_navigation)/config/global_planner_params.yaml" command="load"/>
+		<!-- NavfnROS global planner params -->
+		<rosparam 
+			unless="$(arg global)"
+			file="$(find cannyone_navigation)/config/navfn_planner_params.yaml" command="load"/>
+
+		<remap from="odom" to="$(arg odom_topic)"/>
+	</node>
+
+</launch>

@@ -1,0 +1,9 @@
+mass: 0.1         # Motor mass in Kg
+x_size: 0.057     # Motor dimension in X axis
+y_size: 0.057     # Motor dimension in Z axis
+z_size: 0.109     # Motor dimension in Y axis
+mesh: ''  # Name of the mesh files. Leave it empty ('') to have a red wheel
+#mesh: 'motor.stl'
+x_offset: 0.176
+y_offset: -0.0085
+z_offset: 0.035

@@ -1,0 +1,8 @@
+# Map full size in millimeter [14010 7020 0000]
+image: Flyer_3.pgm
+resolution: 0.0100000
+origin: [0.000000, 0.000000, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

@@ -1,0 +1,17 @@
+# NavfnROS Global Planner parameters. 
+# For full documentation of the parameters in this file, please see
+#
+#  http://wiki.ros.org/navfn#Parameters
+#
+
+base_global_planner: "navfn/NavfnROS"
+
+NavfnROS:
+  allow_unknown: false            # Exactly mirror behavior of navfn, use defaults for other boolean parameters, default false
+  planner_window_x: 0.0           # Use the quadratic approximation of the potential. Otherwise, use a simpler calculation, default true
+  planner_window_y: 0.0           # Use dijkstra's algorithm. Otherwise, A*, default true
+  default_tolerance: 0.0          # Create a path that follows the grid boundaries. Otherwise, use a gradient descent method, default false
+  visualize_potential: false      # For Debugging
+  lethal_cost: 253
+  neutral_cost: 66
+  cost_factor: 0.55
